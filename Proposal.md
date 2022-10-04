@@ -18,6 +18,22 @@ A map which has a central focus around AirBnB hosts and their data, which uses t
 ## Data Sources
 * OpenWeatherMap API
 * Google Maps Platform API
+* [Airport Codes](https://datahub.io/core/airport-codes)
+    * Size: 35.00 MB
+    * Record Count: >> 100
+    * Columns
+        * ident
+        * type
+        * name
+        * elevation_ft
+        * continent
+        * iso_country
+        * iso_region
+        * municipality
+        * gps_code
+        * iata_code
+        * local_code
+        * coordinates
 * [U.S. AirBnB Open Data](https://www.kaggle.com/datasets/kritikseth/us-airbnb-open-data)
     * Size: 36.08 MB
     * Record Count: 35,534
@@ -43,7 +59,7 @@ A map which has a central focus around AirBnB hosts and their data, which uses t
 ## Work Breakdown
 1. Gather and clean data starting with primary data source.
     1. Trim out unnecessary columns.
-1. Design ERD for SQLITE database.
+1. Design ERD for PostgreSQL database.
 1. Build HTML landing page for primary endpoint.
     1. Define page events.
     1. Assign JS logic to page events.
