@@ -7,6 +7,9 @@
 config.py
 config.js
 
+# mac specific file type
+.DS_Store
+
 # User-specific files
 *.rsuser
 *.suo
