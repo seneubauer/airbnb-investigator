@@ -18,22 +18,17 @@ A map which has a central focus around AirBnB hosts and their data, which uses t
 ## Data Sources
 * OpenWeatherMap API
 * Google Maps Platform API
-* [Airport Codes](https://datahub.io/core/airport-codes)
-    * Size: 35.00 MB
-    * Record Count: >> 100
+* [List of US Airports]([https://datahub.io/core/airport-codes](https://www.kaggle.com/datasets/aravindram11/list-of-us-airports?select=airports.csv))
+    * Size: 22.69 kB
+    * Record Count: 341
     * Columns
-        * ident
-        * type
-        * name
-        * elevation_ft
-        * continent
-        * iso_country
-        * iso_region
-        * municipality
-        * gps_code
-        * iata_code
-        * local_code
-        * coordinates
+        * iata
+        * airport
+        * city
+        * state
+        * country
+        * latitude
+        * longitude
 * [U.S. AirBnB Open Data](https://www.kaggle.com/datasets/kritikseth/us-airbnb-open-data)
     * Size: 36.08 MB
     * Record Count: 35,534
