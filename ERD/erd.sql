@@ -1,4 +1,4 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
 
@@ -62,7 +62,7 @@ CREATE TABLE "stg_airbnbs" (
     "host_id" integer   NULL,
 	"host_name" varchar(255) NULL,
 	"neighborhood_group" varchar(255) NULL,
-	"neighborhood" varchar(25) NULL,
+	"neighborhood" varchar(255) NULL,
     "latitude" decimal   NULL,
     "longitude" decimal   NULL,
     "room_type" varchar(50)   NULL,
@@ -73,12 +73,12 @@ CREATE TABLE "stg_airbnbs" (
     "reviews_per_month" decimal   NULL,
 	"calculated_host_listings_count" int null,
     "availability_365" integer  NULL,
-    "city" varchar(255)   NULL,
+    "city" varchar(255)   NULL
     )
 
 CREATE TABLE "stg_airports" (
     "iata" varchar(4)   NOT NULL,
-    "airport_name" varchar(255)   NULL,
+    "airport" varchar(255)   NULL,
     "city" varchar(255)   NULL,
     "state" varchar(2)   NULL,
     "latitude" decimal   NOT NULL,
@@ -87,13 +87,3 @@ CREATE TABLE "stg_airports" (
      );
 
 DROP TABLE IF EXISTS stg_airports;
-
-CREATE TABLE stg_airports
-(
-    iata varchar(4) NOT NULL,
-    airport_name varchar(255) NULL,
-    city varchar(255) NULL,
-    state char(2) NULL,
-    latitude numeric NOT NULL,
-    longitude numeric NOT NULL
-)
