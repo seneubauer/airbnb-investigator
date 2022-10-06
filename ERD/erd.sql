@@ -80,7 +80,7 @@ CREATE TABLE "stg_airports" (
     "iata" varchar(4)   NOT NULL,
     "airport" varchar(255)   NULL,
     "city" varchar(255)   NULL,
-    "state" varchar(2)   NULL,
+    "state" varchar(4)   NULL,
     "latitude" decimal   NOT NULL,
     "longitude" decimal   NOT NULL
 
