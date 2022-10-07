@@ -74,7 +74,7 @@ CREATE TABLE "stg_airbnbs" (
 	"calculated_host_listings_count" int null,
     "availability_365" integer  NULL,
     "city" varchar(255)   NULL
-    )
+    );
 
 CREATE TABLE "stg_airports" (
     "iata" varchar(4)   NOT NULL,
