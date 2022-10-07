@@ -10,8 +10,9 @@
 # Icon must end with two \r
 Icon
 
-# Confidential information exclusion
+# Confidential information exclusions
 config.py
+config.js
 
 # Thumbnails
 ._*
