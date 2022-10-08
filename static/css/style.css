@@ -1,0 +1,21 @@
+/* set map, body, and html to 100% of the screen size */
+#map {
+    height:100%;
+}
+/* might have to change 100% to 100vh */
+
+
+#map_loc {
+    position: relative;
+}
+
+#search_loc {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#search_loc {
+    z-index: 10;
+}
