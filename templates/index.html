@@ -51,6 +51,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- search bar -->
+        <div class="row gx-0">
+            <div class="col-md-8">
+                <div class="border rounded bg-light m-3 p-2">
+                    <h6>Enter search terms below to find what is nearby!</h6>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+                        <input type="text" class="form-control" placeholder="Historical Attractions, Restaurants" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border rounded bg-light m-3 p-2">
+                    <h6>Unit System</h6>
+                    <select class="form-select" id="units_selector">
+                        <option value="0">Standard</option>
+                        <option value="1">Metric</option>
+                        <option value="2">Imperial</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         
         <!-- body section -->
         <div class="row gx-0">
@@ -88,31 +111,31 @@
                             </tr>
                             <tr>
                                 <th scope="row">Host</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_host"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Price</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_price"></td>
                             </tr>
                             <tr>
                                 <th scope="row">City</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_city"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Availability</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_availability"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Minimum Nights</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_minimum_nights"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Last Review</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_last_review"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Number of Reviews</th>
-                                <td id="selection_name"></td>
+                                <td id="selection_number_of_reviews"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -135,7 +158,7 @@
                     </div>
 
                     <!-- weather forecast -->
-                    <div id="temp_plot"></div>
+                    <div id="forecast_plot"></div>
                 </div>
             </div>
         </div>

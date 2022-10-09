@@ -9,11 +9,45 @@ let param_language = "en";
 let usa_center = [39.833333, -98.583333];
 let current_coordinates = usa_center;
 
+// define the unit system dictionaries
+let unit_systems = [
+    {
+        temp_name: "Kelvin",
+        temp_units: "K"
+    },
+    {
+        temp_name: "Celcius",
+        temp_units: "°C"
+    },
+    {
+        temp_name: "Fahrenheit",
+        temp_units: "°F"
+    }];
+
+// define the axis titles
+let axis_titles = [
+    "Temperature",
+    "Temperature",
+    "Temperature",
+    "Humidity",
+    "Cloudiness",
+    "Wind Speed"];
+
 // identify HTML elements for later reference
 let forecast_selector = d3.select("#weather_metric_selector");
+let unit_system_selector = d3.select("#units_selector");
+let metadata_name = d3.select("#selection_name");
+let metadata_host = d3.select("#selection_host");
+let metadata_price = d3.select("#selection_price");
+let metadata_city = d3.select("#selection_city");
+let metadata_availability = d3.select("#selection_availability");
+let metadata_minimum_nights = d3.select("#selection_minimum_nights");
+let metadata_last_review = d3.select("#selection_last_review");
+let metadata_number_of_reviews = d3.select("#selection_number_of_reviews");
 
 // define HTML element events
 forecast_selector.on("change", Forecast_Update);
+unit_system_selector.on("change", Forecast_Update);
 
 // sample airbnb data
 let airbnbs = [
@@ -28,29 +62,54 @@ init(usa_center);
 
 // initial configuration of the web page
 function init(initial_coordinates)
-{
+{   
+    // assemble the airbnb markers
+    let airbnb_markers = [];
+    for (let i = 0; i < airbnbs.length; i++)
+    {
+        airbnb_markers.push(L.marker(airbnbs[i].location)
+            .bindPopup(`<h5 id="test">${airbnbs[i].name}</h5>`));
+    }
+
+    // construct the airbnb marker layer
+    let airbnb_markers_layer = L.layerGroup(airbnb_markers);
+
+    // construct the street layer
+    let street_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    // construct the topographic layer
+    let topo_layer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    });
+
+    // specify the base layers
+    let baseMaps = {
+        Street: street_layer,
+        Topography: topo_layer
+    };
+
+    // specify the overlays
+    let overlayMaps = {
+        AirBnBs: airbnb_markers_layer
+    };
+    
     // initialize the leaflet map
     let myMap = L.map("leaflet_map", {
         center: usa_center,
-        zoom: 5
+        zoom: 5,
+        layers: [street_layer, airbnb_markers_layer]
     });
-    
-    // add the background tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(myMap);
 
-    // construct the airbnb markers
-    for (let i = 0; i < airbnbs.length; i++)
-    {
-        L.marker(airbnbs[i].location)
-            .bindPopup(`<h5 id="test">${airbnbs[i].name}</h5>`)
-            .addTo(myMap)
-            .on("click", Marker_Clicked(airbnbs[i].location[0], airbnbs[i].location[1]));
-    }
+    // add the base and overlays
+    L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
     // set the initial value for the forecast selector
     forecast_selector.property("value", "0");
+
+    // set the initial value for the unit system selector
+    unit_system_selector.property("value", "2");
 
     // construct the OWM api call
     let weather_url = `https://api.openweathermap.org/data/2.5/forecast?lat=${initial_coordinates[0]}&lon=${initial_coordinates[1]}&units=${param_units}&lang=${param_language}&appid=${owm_api_key}`;
@@ -60,7 +119,7 @@ function init(initial_coordinates)
     {
         // retrieve the array of dates
         let dates = Object.values(data.list);
-
+        
         // initialize the data arrays
         let weather_data = [[], [], [], [], [], []];
         let date_arr = [];
@@ -80,16 +139,23 @@ function init(initial_coordinates)
         // retrieve the selected forecast metric
         let forecast_metric = forecast_selector.property("value");
 
+        // retrieve the selected unit system
+        let unit_system = unit_systems[unit_system_selector.property("value")];
+
         // weather forecast trace data
         let forecast_trace = {
             x: date_arr,
             y: weather_data[forecast_metric]
         };
         let forecast_data = [forecast_trace];
-        
+
         // weather forecast layout
         let forecast_layout = {
             showlegend: false,
+            yaxis: {
+                title: {
+                    text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
+                }},
             margin: {
                 l: 50,
                 t: 50,
@@ -100,7 +166,7 @@ function init(initial_coordinates)
         };
 
         // build me an army worth of Mordor
-        Plotly.newPlot("temp_plot", forecast_data, forecast_layout);
+        Plotly.newPlot("forecast_plot", forecast_data, forecast_layout);
     });
 }
 
@@ -112,6 +178,8 @@ function Marker_Clicked(param_lat, param_lon)
 
     // save the clicked coordinates to the current coordinate variable
     current_coordinates = [param_lat, param_lon];
+    
+    console.log(current_coordinates);
 
     // retrieve the OWM JSON data
     d3.json(weather_url).then(function (data)
@@ -137,10 +205,23 @@ function Marker_Clicked(param_lat, param_lon)
 
         // retrieve the selected forecast metric
         let forecast_metric = forecast_selector.property("value");
+
+        // retrieve the selected unit system
+        let unit_system = unit_systems[unit_system_selector.property("value")];
+
+        // build the update dictionary
+        let update = {
+            x: [date_arr],
+            y: [weather_data[forecast_metric]],
+            yaxis: {
+                title: {
+                    text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
+                }
+            }
+        };
         
         // update the forecast plot
-        Plotly.restyle("temp_plot", "x", [date_arr]);
-        Plotly.restyle("temp_plot", "y", [weather_data[forecast_metric]]);
+        Plotly.restyle("forecast_plot", update, [0]);
     });
 }
 
@@ -174,14 +255,22 @@ function Forecast_Update()
 
         // retrieve the selected forecast metric
         let forecast_metric = forecast_selector.property("value");
-        
-        Plotly.restyle("temp_plot", "x", [date_arr]);
-        Plotly.restyle("temp_plot", "y", [weather_data[forecast_metric]]);
-    });
-}
 
-// convert unix timestamps to JS date objects
-function time_converter(unix_time)
-{
-    return new Date(unix_time * 1000);
+        // retrieve the selected unit system
+        let unit_system = unit_systems[unit_system_selector.property("value")];
+
+        // build the update dictionary
+        let update = {
+            x: [date_arr],
+            y: [weather_data[forecast_metric]],
+            yaxis: {
+                title: {
+                    text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
+                }
+            }
+        };
+        
+        // update the forecast plot
+        Plotly.restyle("forecast_plot", update, [0]);
+    });
 }
