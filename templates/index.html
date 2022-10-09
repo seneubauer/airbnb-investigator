@@ -43,9 +43,9 @@
     <div class="container-fluid">
 
         <!-- header section -->
-        <div class="row">
+        <div class="row g-0">
             <div class="col-md-12">
-                <div class="border rounded bg-light m-3 p-2">
+                <div class="border rounded bg-light m-2 p-2">
                     <h1 class="display-4 text-center">AirBnB Investigator</h1>
                     <p class="text-center">Use the interactive map below to explore your options!</p>
                 </div>
@@ -53,9 +53,9 @@
         </div>
 
         <!-- search bar -->
-        <div class="row gx-0">
+        <div class="row g-0">
             <div class="col-md-8">
-                <div class="border rounded bg-light m-3 p-2">
+                <div class="border rounded bg-light m-2 p-2">
                     <h6>Enter search terms below to find what is nearby!</h6>
                     <div class="input-group">
                         <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="border rounded bg-light m-3 p-2">
+                <div class="border rounded bg-light m-2 p-2">
                     <h6>Unit System</h6>
                     <select class="form-select" id="units_selector">
                         <option value="0">Standard</option>
@@ -76,11 +76,11 @@
         </div>
         
         <!-- body section -->
-        <div class="row gx-0">
+        <div class="row g-0">
             
             <!-- map block -->
             <div class="col-md-8"> 
-                <div id="map_loc" class="border rounded bg-light m-3">
+                <div id="map_loc" class="border rounded bg-light m-2">
                 
                     <!-- leaflet map -->
                     <div id="leaflet_map"></div>
@@ -99,7 +99,7 @@
             <div class="col-md-4"> 
 
                 <!-- metadata -->
-                <div class="border rounded bg-light m-3 p-2">
+                <div class="border rounded bg-light m-2 p-2">
                     <table class="table table-hover">
                         <thead>
                             <th scope="col" colspan="2"><strong>AirBnB Details</strong></th>
@@ -116,6 +116,10 @@
                             <tr>
                                 <th scope="row">Price</th>
                                 <td id="selection_price"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Room Type</th>
+                                <td id="selection_room_type"></td>
                             </tr>
                             <tr>
                                 <th scope="row">City</th>
@@ -142,7 +146,7 @@
                 </div>
 
                 <!-- weather data -->
-                <div class="border rounded bg-light m-3 p-2">
+                <div class="border rounded bg-light m-2 p-2">
 
                     <!-- weather metric selection -->
                     <div>
