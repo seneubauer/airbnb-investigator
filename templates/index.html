@@ -40,82 +40,113 @@
 </head>
 
 <body>
-    
-    <!-- header section -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="border rounded bg-light m-2 p-2">
-                <h1 class="display-4 text-center">AirBnB Investigator</h1>
-                <p class="text-center">Use the interactive map below to explore your options!</p>
+    <div class="container-fluid">
+
+        <!-- header section -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="border rounded bg-light m-3 p-2">
+                    <h1 class="display-4 text-center">AirBnB Investigator</h1>
+                    <p class="text-center">Use the interactive map below to explore your options!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- body section -->
+        <div class="row gx-0">
+            
+            <!-- map block -->
+            <div class="col-md-8"> 
+                <div id="map_loc" class="border rounded bg-light m-3">
+                
+                    <!-- leaflet map -->
+                    <div id="leaflet_map"></div>
+
+                    <!-- paste fancy search dropdown inside this DIV -->
+                    <div id="search_loc">
+                        <select class="js-example-basic-single" name="state">
+                            <option value="AL">Alabama</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- selection data block -->
+            <div class="col-md-4"> 
+
+                <!-- metadata -->
+                <div class="border rounded bg-light m-3 p-2">
+                    <table class="table table-hover">
+                        <thead>
+                            <th scope="col" colspan="2"><strong>AirBnB Details</strong></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Name</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Host</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Price</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">City</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Availability</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Minimum Nights</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Last Review</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Number of Reviews</th>
+                                <td id="selection_name"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- weather data -->
+                <div class="border rounded bg-light m-3 p-2">
+
+                    <!-- weather metric selection -->
+                    <div>
+                        <p class="h6 text-center">Five Day Forecast</p>
+                        <select class="form-select" id="weather_metric_selector">
+                            <option value="0">Max Temperature</option>
+                            <option value="1">Min Temperature</option>
+                            <option value="2">'Feels Like' Temperature</option>
+                            <option value="3">Humidity</option>
+                            <option value="4">Cloudiness</option>
+                            <option value="5">Wind Speed</option>
+                        </select>
+                    </div>
+
+                    <!-- weather forecast -->
+                    <div id="temp_plot"></div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- This indent layer starts a new Bootsrap row. -->
-    <div class="row">
-        
-        <!-- map element -->
-        <div class="col-md-8"> 
-          <div id="map_loc" class="border rounded bg-light m-2">
 
-            <!-- <img src="https://picsum.photos/600/400" class="img-fluid border rounded" alt="..."> -->
-            <div id="leaflet_map"></div>
-
-            <!-- paste fancy search dropdown inside this DIV -->
-            <div id="search_loc">
-				<select class="js-example-basic-single" name="state">
-					<option value="AL">Alabama</option>
-					<option value="WY">Wyoming</option>
-				</select>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- This indent layer starts a new Bootsrap component. -->
-        <div class="col-md-4"> 
-          <!-- Create Custom Table Class -->
-          <h3>
-            Some AirBnb Pin
-          </h3><hr>
-          <h3>Data Over Here</h3>
-          <div id="temp_plot"></div>
-          <!-- </table> -->
-        </div>
-      </div>
-  
-      <!-- This indent layer starts a new Bootsrap row. -->
-      <div class="row">
-        
-        <!-- This indent layer starts a new Bootsrap component. -->
-        
-        <div class="col-md-12" style="text-align: center;">
-          <hr>
-          <h2>
-            Some Statement about some Visualizations
-          </h2>
-          <hr>
-        </div>
-  
-        <div class="col-md-5">
-          <h3>
-            A medium width chart here
-          </h3>
-        </div>
-        <!-- -------------------------------------- -->
-        <div class="col-md-7">
-          <h3>
-            A wider chart could go here
-          </h3>
-        </div>
-        
-      </div>
-
-    
-    <!-- import the js scripts -->
+    <!-- bootstrap js scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
             crossorigin="anonymous"></script>
+
+    <!-- local js scripts -->
     <script src="/static/js/config.js"></script>
     <script src="/static/js/logic.js"></script>
 </body>
