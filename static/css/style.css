@@ -1,9 +1,7 @@
 /* set map, body, and html to 100% of the screen size */
-#map {
-    height:100%;
+#leaflet_map {
+    height:100vh;
 }
-/* might have to change 100% to 100vh */
-
 
 #map_loc {
     position: relative;
