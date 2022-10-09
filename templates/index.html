@@ -24,6 +24,16 @@
     <!-- link to style.css -->
     <link rel="stylesheet" href="/static/css/style.css">
 
+    <!-- link to leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+            integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+            crossorigin=""/>
+
+    <!-- link to leaflet js scripts -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
     <!-- import the js scripts -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -40,26 +50,28 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-12"> <!--Selects the element's interactivity model from Bootsrap--> 
-            <h3>do we really need this row?</h3> 
-        </div>
-    </div>
-    <hr>
-      
+    
     <!-- This indent layer starts a new Bootsrap row. -->
     <div class="row">
         
-        <!-- This indent layer starts a new Bootsrap component. -->
+        <!-- map element -->
         <div class="col-md-8"> 
-          <h2>
-            Our Map Goes Here
-          </h2>
-          <!-- === Our Map Goes HERE === -->
-          <div id="map"></div>
+          <div id="map_loc" class="border rounded bg-light m-2">
+
+            <!-- <img src="https://picsum.photos/600/400" class="img-fluid border rounded" alt="..."> -->
+            <div id="leaflet_map"></div>
+
+            <!-- paste fancy search dropdown inside this DIV -->
+            <div id="search_loc">
+				<select class="js-example-basic-single" name="state">
+					<option value="AL">Alabama</option>
+					<option value="WY">Wyoming</option>
+				</select>
+            </div>
+          </div>
         </div>
-  
+
+
         <!-- This indent layer starts a new Bootsrap component. -->
         <div class="col-md-4"> 
           <!-- Create Custom Table Class -->
@@ -67,6 +79,7 @@
             Some AirBnb Pin
           </h3><hr>
           <h3>Data Over Here</h3>
+          <div id="temp_plot"></div>
           <!-- </table> -->
         </div>
       </div>
@@ -84,13 +97,13 @@
           <hr>
         </div>
   
-        <div class="col-md-5" style="img-align=center">
+        <div class="col-md-5">
           <h3>
             A medium width chart here
           </h3>
         </div>
         <!-- -------------------------------------- -->
-        <div class="col-md-7" style="img-align=center">
+        <div class="col-md-7">
           <h3>
             A wider chart could go here
           </h3>
@@ -103,6 +116,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
             crossorigin="anonymous"></script>
+    <script src="/static/js/config.js"></script>
     <script src="/static/js/logic.js"></script>
 </body>
 
