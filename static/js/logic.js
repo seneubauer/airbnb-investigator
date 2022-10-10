@@ -22,7 +22,8 @@ let unit_systems = [
     {
         temp_name: "Fahrenheit",
         temp_units: "°F"
-    }];
+    }
+];
 
 // define the axis titles
 let axis_titles = [
@@ -31,14 +32,20 @@ let axis_titles = [
     "Temperature",
     "Humidity",
     "Cloudiness",
-    "Wind Speed"];
+    "Wind Speed"
+];
 
 // identify HTML elements for later reference
 let forecast_selector = d3.select("#weather_metric_selector");
 let unit_system_selector = d3.select("#units_selector");
+let search_command_button = d3.select("#search_command");
+let reset_command_button = d3.select("#reset_command");
+let search_terms_input = d3.select("#search_terms");
+let search_radius_input = d3.select("#search_radius");
 let metadata_name = d3.select("#selection_name");
 let metadata_host = d3.select("#selection_host");
 let metadata_price = d3.select("#selection_price");
+let metadata_room_type = d3.select("#selection_room_type");
 let metadata_city = d3.select("#selection_city");
 let metadata_availability = d3.select("#selection_availability");
 let metadata_minimum_nights = d3.select("#selection_minimum_nights");
@@ -48,11 +55,33 @@ let metadata_number_of_reviews = d3.select("#selection_number_of_reviews");
 // define HTML element events
 forecast_selector.on("change", Forecast_Update);
 unit_system_selector.on("change", Forecast_Update);
+search_command_button.on("click", Places_Search);
+reset_command_button.on("click", Places_Reset);
 
 // sample airbnb data
 let airbnbs = [
     {
+        name: "Charming Victorian home - twin beds + breakfast",
+        host: "Evelyne",
+        price: 60,
+        room_type: "Private Room",
+        city: "Asheville",
+        availability: 0,
+        minimum_nights: 1,
+        last_review: "16/02/20",
+        number_of_reviews: 138,
+        location: [35.65146, -82.62792]
+    },
+    {
         name: "French Chic Loft",
+        host: "Celeste",
+        price: 470,
+        room_type: "Private Room",
+        city: "Asheville",
+        availability: 288,
+        minimum_nights: 1,
+        last_review: "07/09/20",
+        number_of_reviews: 114,
         location: [35.59779, -82.5554]
     }
 ];
@@ -63,12 +92,18 @@ init(usa_center);
 // initial configuration of the web page
 function init(initial_coordinates)
 {   
+    // set the initial value for the forecast selector
+    forecast_selector.property("value", "0");
+    unit_system_selector.property("value", "2");
+    search_radius_input.property("value", "5000");
+
     // assemble the airbnb markers
     let airbnb_markers = [];
     for (let i = 0; i < airbnbs.length; i++)
     {
         airbnb_markers.push(L.marker(airbnbs[i].location)
-            .bindPopup(`<h5 id="test">${airbnbs[i].name}</h5>`));
+            .bindPopup(`<h6 id="test">${airbnbs[i].name}</h6>`)
+            .on("click", function() { Marker_Clicked(airbnbs[i].location[0], airbnbs[i].location[1])}));
     }
 
     // construct the airbnb marker layer
@@ -103,13 +138,7 @@ function init(initial_coordinates)
     });
 
     // add the base and overlays
-    L.control.layers(baseMaps, overlayMaps).addTo(myMap);
-
-    // set the initial value for the forecast selector
-    forecast_selector.property("value", "0");
-
-    // set the initial value for the unit system selector
-    unit_system_selector.property("value", "2");
+    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(myMap);
 
     // construct the OWM api call
     let weather_url = `https://api.openweathermap.org/data/2.5/forecast?lat=${initial_coordinates[0]}&lon=${initial_coordinates[1]}&units=${param_units}&lang=${param_language}&appid=${owm_api_key}`;
@@ -178,8 +207,6 @@ function Marker_Clicked(param_lat, param_lon)
 
     // save the clicked coordinates to the current coordinate variable
     current_coordinates = [param_lat, param_lon];
-    
-    console.log(current_coordinates);
 
     // retrieve the OWM JSON data
     d3.json(weather_url).then(function (data)
@@ -209,10 +236,12 @@ function Marker_Clicked(param_lat, param_lon)
         // retrieve the selected unit system
         let unit_system = unit_systems[unit_system_selector.property("value")];
 
-        // build the update dictionary
-        let update = {
+        // build the update
+        let update_trace = {
             x: [date_arr],
-            y: [weather_data[forecast_metric]],
+            y: [weather_data[forecast_metric]]  
+        };
+        let update_layout = {
             yaxis: {
                 title: {
                     text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
@@ -221,7 +250,8 @@ function Marker_Clicked(param_lat, param_lon)
         };
         
         // update the forecast plot
-        Plotly.restyle("forecast_plot", update, [0]);
+        Plotly.restyle("forecast_plot", update_trace, [0]);
+        Plotly.relayout("forecast_plot", update_layout, [0]);
     });
 }
 
@@ -259,10 +289,12 @@ function Forecast_Update()
         // retrieve the selected unit system
         let unit_system = unit_systems[unit_system_selector.property("value")];
 
-        // build the update dictionary
-        let update = {
+        // build the update
+        let update_trace = {
             x: [date_arr],
-            y: [weather_data[forecast_metric]],
+            y: [weather_data[forecast_metric]]  
+        };
+        let update_layout = {
             yaxis: {
                 title: {
                     text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
@@ -271,6 +303,30 @@ function Forecast_Update()
         };
         
         // update the forecast plot
-        Plotly.restyle("forecast_plot", update, [0]);
+        Plotly.restyle("forecast_plot", update_trace, [0]);
+        Plotly.relayout("forecast_plot", update_layout, [0]);
     });
+}
+
+// perform the Google Places request
+function Places_Search()
+{
+    // retrieve the search parameters
+    let search_terms = search_terms_input.property("value");
+    let search_radius = search_radius_input.property("value");
+
+    // construct the api query
+    let places_url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${current_coordinates[0]},${current_coordinates[1]}&radius=${search_radius}&type=${search_terms}&key=${places_api_key}`;
+    
+    // get the places api result
+    d3.json(places_url).then(function (data)
+    {
+        console.log(data);
+    });
+}
+
+// perform the Google Places reset
+function Places_Reset()
+{
+    
 }
