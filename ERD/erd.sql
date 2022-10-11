@@ -1,6 +1,16 @@
 -- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
+-- DROP DATABASE IF EXISTS "AirBnB";
+
+CREATE DATABASE "AirBnB"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 
 CREATE TABLE "airports" (
     "iata" varchar(4)   NOT NULL,
@@ -56,6 +66,12 @@ REFERENCES "hosts" ("host_id");
 
 ALTER TABLE "airbnbs" ADD CONSTRAINT "fk_airbnbs_room_id" FOREIGN KEY("room_id")
 REFERENCES "room_types" ("room_id");
+
+CREATE TABLE us_cities (
+city_name varchar(255) NOT NULL,
+latitude float NOT NULL,
+longitude float NOT NULL
+);
 
 CREATE TABLE "stg_airbnbs" (
     "id" integer   NOT NULL,
