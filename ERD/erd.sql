@@ -15,7 +15,7 @@ CREATE TABLE "airports" (
 );
 
 CREATE TABLE "airbnbs" (
-    "id" integer   NOT NULL,
+    "id" serial   NOT NULL,
     "airbnb_name" varchar(255)   NULL,
     "host_id" integer   NULL,
     "latitude" decimal   NULL,
@@ -34,11 +34,12 @@ CREATE TABLE "airbnbs" (
 );
 
 CREATE TABLE "hosts" (
+    "id" serial NOT NULL,
     "host_id" integer   NULL,
     "host_name" varchar(255)   NULL,
     "calculated_host_listings_count" integer NULL,
     CONSTRAINT "pk_hosts" PRIMARY KEY (
-        "host_id"
+        "id"
      )
 );
 
@@ -87,3 +88,13 @@ CREATE TABLE "stg_airports" (
      );
 
 DROP TABLE IF EXISTS stg_airports;
+
+CREATE TABLE "us_cities" (
+    "city_id" serial   NOT NULL,
+    "city" varchar(255)   NULL,
+    "latitude" decimal   NULL,
+    "longitude" decimal   NULL,
+    CONSTRAINT "pk_us_cities" PRIMARY KEY (
+        "city_id"
+     )
+);
