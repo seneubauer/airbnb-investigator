@@ -16,7 +16,7 @@ CREATE TABLE "airports" (
     "iata" varchar(4)   NOT NULL,
     "airport_name" varchar(255)   NULL,
     "city" varchar(255)   NULL,
-    "state" varchar(2)   NULL,
+    "state" varchar(4)   NULL,
     "latitude" decimal   NOT NULL,
     "longitude" decimal   NOT NULL,
     CONSTRAINT "pk_airports" PRIMARY KEY (
@@ -34,7 +34,6 @@ CREATE TABLE "airbnbs" (
     "price" decimal   NULL,
     "minimum_nights" int   NULL,
     "number_of_reviews" int   NULL,
-    "last_review" date   NULL,
     "reviews_per_month" decimal   NULL,
     "availability_365" integer  NULL,
     "city" varchar(255)   NULL,
@@ -86,13 +85,13 @@ CREATE TABLE "stg_airbnbs" (
     "price" decimal   NULL,
     "minimum_nights" int   NULL,
     "number_of_reviews" int   NULL,
-    "last_review" date   NULL,
+    "last_review" varchar(10)   NULL,
     "reviews_per_month" decimal   NULL,
 	"calculated_host_listings_count" int null,
     "availability_365" integer  NULL,
     "city" varchar(255)   NULL
     );
-
+    
 CREATE TABLE "stg_airports" (
     "iata" varchar(4)   NOT NULL,
     "airport" varchar(255)   NULL,
