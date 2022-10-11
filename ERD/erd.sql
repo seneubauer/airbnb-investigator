@@ -1,6 +1,16 @@
 -- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
+-- DROP DATABASE IF EXISTS "AirBnB";
+
+CREATE DATABASE "AirBnB"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 
 CREATE TABLE "airports" (
     "iata" varchar(4)   NOT NULL,
@@ -15,7 +25,7 @@ CREATE TABLE "airports" (
 );
 
 CREATE TABLE "airbnbs" (
-    "id" integer   NOT NULL,
+    "id" serial   NOT NULL,
     "airbnb_name" varchar(255)   NULL,
     "host_id" integer   NULL,
     "latitude" decimal   NULL,
@@ -34,11 +44,12 @@ CREATE TABLE "airbnbs" (
 );
 
 CREATE TABLE "hosts" (
+    "id" serial NOT NULL,
     "host_id" integer   NULL,
     "host_name" varchar(255)   NULL,
     "calculated_host_listings_count" integer NULL,
     CONSTRAINT "pk_hosts" PRIMARY KEY (
-        "host_id"
+        "id"
      )
 );
 
@@ -55,6 +66,12 @@ REFERENCES "hosts" ("host_id");
 
 ALTER TABLE "airbnbs" ADD CONSTRAINT "fk_airbnbs_room_id" FOREIGN KEY("room_id")
 REFERENCES "room_types" ("room_id");
+
+CREATE TABLE us_cities (
+city_name varchar(255) NOT NULL,
+latitude float NOT NULL,
+longitude float NOT NULL
+);
 
 CREATE TABLE "stg_airbnbs" (
     "id" integer   NOT NULL,
@@ -87,3 +104,13 @@ CREATE TABLE "stg_airports" (
      );
 
 DROP TABLE IF EXISTS stg_airports;
+
+CREATE TABLE "us_cities" (
+    "city_id" serial   NOT NULL,
+    "city" varchar(255)   NULL,
+    "latitude" decimal   NULL,
+    "longitude" decimal   NULL,
+    CONSTRAINT "pk_us_cities" PRIMARY KEY (
+        "city_id"
+     )
+);
