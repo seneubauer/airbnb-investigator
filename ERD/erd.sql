@@ -24,31 +24,31 @@ CREATE TABLE "airports" (
      )
 );
 
-CREATE TABLE "airbnbs" (
-    "id" serial   NOT NULL,
-    "airbnb_name" varchar(255)   NULL,
-    "host_id" integer   NULL,
-    "latitude" decimal   NULL,
-    "longitude" decimal   NULL,
-    "room_id" integer   NULL,
-    "price" decimal   NULL,
-    "minimum_nights" int   NULL,
-    "number_of_reviews" int   NULL,
-    "reviews_per_month" decimal   NULL,
-    "availability_365" integer  NULL,
-    "city" varchar(255)   NULL,
-    CONSTRAINT "pk_airbnbs" PRIMARY KEY (
-        "id"
-     )
+CREATE TABLE airbnbs (airbnb_pk serial not null,
+	airbnb_id int4 NOT NULL,
+	airbnb_name varchar(255) NULL,
+	host_id int4 NULL,
+	latitude numeric NULL,
+	longitude numeric NULL,
+	room_id int4 NULL,
+	price numeric NULL,
+	minimum_nights int4 NULL,
+	number_of_reviews int4 NULL,
+	reviews_per_month numeric NULL,
+	availability_365 int4 NULL,
+	city varchar(255) NULL,
+	CONSTRAINT pk_airbnbs PRIMARY KEY (airbnb_pk)
 );
+-- airbnbs foreign key(s)
+
+ALTER TABLE airbnbs
+ADD CONSTRAINT fk_airbnbs_room_id FOREIGN KEY (room_id) REFERENCES room_types(room_id);
 
 CREATE TABLE "hosts" (
-    "id" serial NOT NULL,
-    "host_id" integer   NULL,
-    "host_name" varchar(255)   NULL,
-    "calculated_host_listings_count" integer NULL,
-    CONSTRAINT "pk_hosts" PRIMARY KEY (
-        "id"
+    "host_id" integer   not null,
+    "airbnb_id" integer not null,
+    "host_name" varchar(255)   null,
+    CONSTRAINT "pk_hosts" PRIMARY KEY ("host_id", "airbnb_id"
      )
 );
 
@@ -59,12 +59,6 @@ CREATE TABLE "room_types" (
         "room_id"
      )
 );
-
-ALTER TABLE "airbnbs" ADD CONSTRAINT "fk_airbnbs_host_id" FOREIGN KEY("host_id")
-REFERENCES "hosts" ("host_id");
-
-ALTER TABLE "airbnbs" ADD CONSTRAINT "fk_airbnbs_room_id" FOREIGN KEY("room_id")
-REFERENCES "room_types" ("room_id");
 
 CREATE TABLE us_cities (
 city_name varchar(255) NOT NULL,
