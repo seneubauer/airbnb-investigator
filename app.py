@@ -24,10 +24,12 @@ engine = create_engine(connection_string, pool_pre_ping=True)
 base = automap_base()
 base.prepare(engine, reflect=True)
 
+
 #Choose the SQL tables we wish to use.
 airbnb = base.classes.airbnbs
 hosts = base.classes.hosts
 #cities = base.classes.us_cities
+
 
 # Instantiate the Flask application.
 app = Flask(__name__)
@@ -38,6 +40,33 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # Disable page caching
 def IndexRoute():
     webpage = render_template("index.html")
     return webpage
+
+# weather api call
+@app.route("/weather_forecast/<lat_value>/<lon_value>/<unit_system>/")
+def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):
+    
+    # construct the api url
+    weather_url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat_value}&lon={lon_value}&appid={owm_api_key}&units={unit_system}&lang={owm_param_lang}"
+    
+    # run the api request
+    try:
+        return { "status": "ok", "response": requests.get(weather_url).json() }
+    except requests.exceptions.RequestException as e:
+        return { "status": "not_ok", "response": e.strerror }
+
+# places api call
+@app.route("/nearby_search/<lat_value>/<lon_value>/<search_radius>/<search_terms>/")
+def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms):
+    
+    # construct the api url
+    places_url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat_value},{lon_value}&radius={search_radius}&type={search_terms}&key={places_api_key}"
+    
+    # run the api request
+    try:
+        return { "status": "ok", "response": requests.get(places_url).json() }
+    except requests.exceptions.RequestException as e:
+        return { "status": "not_ok", "response": e.strerror }
+    
 
 @app.route("/airbnb")
 def AirBnBRoute():

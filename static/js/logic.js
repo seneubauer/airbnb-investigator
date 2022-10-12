@@ -111,6 +111,10 @@ let metadata_minimum_nights = d3.select("#selection_minimum_nights");
 let metadata_last_review = d3.select("#selection_last_review");
 let metadata_number_of_reviews = d3.select("#selection_number_of_reviews");
 
+// define the layer groups globally
+let airbnb_markers_layer = L.layerGroup();
+let places_markers_layer = L.layerGroup();
+
 // define HTML element events
 forecast_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]) });
 unit_system_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]) });
@@ -132,7 +136,7 @@ function init(initial_coordinates)
     unit_system_selector.property("value", "2");
 
     // set the search radius to 5000 meters
-    search_radius_input.property("value", "5000");
+    search_radius_input.property("value", "2500");
 
 
 
@@ -148,7 +152,7 @@ function init(initial_coordinates)
     }
 
     // construct the airbnb marker layer
-    let airbnb_markers_layer = L.layerGroup(airbnb_markers);
+    airbnb_markers_layer = L.layerGroup(airbnb_markers);
 
     // construct the street layer
     let street_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -168,14 +172,15 @@ function init(initial_coordinates)
 
     // specify the overlays
     let overlayMaps = {
-        AirBnBs: airbnb_markers_layer
+        AirBnBs: airbnb_markers_layer,
+        Search: places_markers_layer
     };
     
     // initialize the leaflet map
     let myMap = L.map("leaflet_map", {
         center: usa_center,
         zoom: 5,
-        layers: [street_layer, airbnb_markers_layer]
+        layers: [street_layer, airbnb_markers_layer, places_markers_layer]
     });
 
     // add the base and overlays
@@ -220,6 +225,21 @@ function init(initial_coordinates)
 
     // build the initial weather forcast plot
     Plotly.newPlot("forecast_plot", forecast_data, forecast_layout);
+
+
+
+    /* ----- populate the autocomplete dropdown ----- */
+
+    // query the flask server
+    d3.json("query_city_names/").then(function (data)
+    {
+        availableTags = data;
+        $("#tags").autocomplete(
+            {
+                source: availableTags
+            }
+        );
+    });
 
 
 
@@ -304,7 +324,71 @@ function Places_Search()
     // get the places api result
     d3.json(route).then(function (data)
     {
-        console.log(data);
+        // check if the places call was successful
+        if (data.status == "ok")
+        {
+            // retrieve the array of businesses
+            businesses = Object.values(data.results);
+
+            // initialize the content arrays
+            let places_markers = [];
+
+            let business_name = "";
+            let lat = 0.0;
+            let lon = 0.0;
+            let rating = 0.0;
+            let price_level = 0.0;
+            let total_ratings = 0;
+
+            // iterate through the businesses
+            for (let i = 0; i < businesses.length; i++)
+            {
+                if ("name" in businesses[i]) { business_name = businesses[i].name; } else { business_name = "undefined"; }
+                if ("geometry" in businesses[i]) { lat = businesses[i].geometry.location.lat; } else { lat = usa_center[0]; }
+                if ("geometry" in businesses[i]) { lon = businesses[i].geometry.location.lon; } else { lon = usa_center[1]; }
+                if ("rating" in businesses[i]) { rating = businesses[i].rating; } else { rating = 0; }
+                if ("price_level" in businesses[i]) { price_level = businesses[i].price_level; } else { price_level = 0; }
+                if ("user_ratings_total" in businesses[i]) {total_ratings = businesses[i].user_ratings_total; } else { total_ratings = 0; }
+
+                places_markers.push(L.marker([lat, lon])
+                    .bindPopup(`
+                        <div class="border rounded bg-light m-2 p-2">
+                            <table class="table table-hover">
+                                <thead>
+                                    <th scope="col" colspan="2"><strong>Place Details</strong></th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Name</th>
+                                        <td>${business_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Price Level</th>
+                                        <td>${price_level}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Rating</th>
+                                        <td>${rating}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Ratings</th>
+                                        <td>${total_ratings}</td>
+                                    </tr>
+                                </tbody>
+                        </table>  
+                    </div>`));
+            }
+
+
+
+
+
+        }
+        else if (data.status == "not_ok")
+        {
+            console.log("Error with Places api call.");
+            console.log(data.response);
+        }
     });
 }
 
