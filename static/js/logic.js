@@ -28,6 +28,7 @@ let airbnbs = [
 
 // confirm logic.js is connected to index.html
 console.log("logic.js is connected to index.html");
+console.log("please show up");
 
 // define the geographic center of contiguous mainlan United States
 let usa_center = [39.833333, -98.583333];
@@ -265,9 +266,9 @@ function Places_Search()
     // retrieve the search parameters
     let search_terms = search_terms_input.property("value");
     let search_radius = search_radius_input.property("value");
-
+    
     // construct the api query
-    let route = `nearby_search/${current_coordinates[0]}/${current_coordinates[1]}/${search_radius}/${search_terms}`;
+    let route = `nearby_search/${current_coordinates[0]}/${current_coordinates[1]}/${search_radius}/${search_terms}/`;
     
     // get the places api result
     d3.json(route).then(function (data)

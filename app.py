@@ -34,7 +34,7 @@ def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):
 
 # places api call
 @app.route("/nearby_search/<lat_value>/<lon_value>/<search_radius>/<search_terms>/")
-def Nearby_Places_API_Request(lat_value: float, lon_value: float, search_radius: int, search_terms: str):
+def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms):
     
     # construct the api url
     places_url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat_value},{lon_value}&radius={search_radius}&type={search_terms}&key={places_api_key}"
