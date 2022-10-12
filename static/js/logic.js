@@ -30,6 +30,37 @@ let airbnbs = [
 console.log("logic.js is connected to index.html");
 console.log("please show up");
 
+// Populate autocomp function
+$(function() {
+    var availableTags = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"
+    ];
+    $("#tags").autocomplete({
+        source: availableTags
+    });
+});
+
 // define the geographic center of contiguous mainlan United States
 let usa_center = [39.833333, -98.583333];
 let current_coordinates = usa_center;
