@@ -12,12 +12,23 @@ owm_param_lang = "en"
 # initialize the flask server
 app = Flask(__name__)
 
+# disable page caching
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 
 # landing page
 @app.route("/")
 def index():
     return render_template("index.html")
+
+# get city names from PostgreSQL
+@app.route("/query_city_names/")
+def Get_City_Names():
+    
+    city_names = []
+    
+    return city_names
+
 
 # weather api call
 @app.route("/weather_forecast/<lat_value>/<lon_value>/<unit_system>/")
