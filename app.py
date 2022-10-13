@@ -71,7 +71,7 @@ def HostRoute():
         dict["host_name"] = host_name
         host_info.append(dict)
         print(host_info)
-    return jsonify(host_info)
+    return jsonify(host_info) 
 
 # @app.route("/cities")
 # def CityRoute():
