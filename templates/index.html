@@ -53,35 +53,27 @@
         <div class="row g-0">
             <div class="col-md-12">
                 <div class="border rounded bg-light m-2 p-2">
-                    <h1 class="display-4 text-center">AirBnB Investigator</h1>
-                    <p class="text-center">Use the interactive map below to explore your options!</p>
+                    <h3 class="display-4 text-center">AirBnB Investigator</h3>
+                    <!-- <p class="text-center">Use the interactive map below to explore your options!</p> -->
                 </div>
             </div>
         </div>
 
         <div class="row g-0">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="border rounded bg-light m-2 p-2">
+                    <p class="h6 text-center">Start typing a US city</p>
                     <div class="ui-widget">
-                        <label for="tags">Start typing a US city.</label>
+                        <label for="tags"></label>
                         <input id="tags">
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-6">
+                <!-- weather data -->
                 <div class="border rounded bg-light m-2 p-2">
-                    <h6>Maybe something here?</h6>
-                    <hr>
-                </div>
-            </div>
-        
-        </div>
-        
-        <!-- search bar -->
-        <div class="row g-0">
-            <div class="col-md-6">
-                <div class="border rounded bg-light m-2 p-2">
-                    <h6>Enter search terms below to find what is nearby!</h6>
+                    <p class="h6 text-center">Search Google Places to find points of interest nearby.</p>
                     <div class="input-group">
                         <button class="btn btn-outline-secondary" id="search_command" type="button">Search</button>
                         <button class="btn btn-outline-secondary" id="reset_command" type="button">Reset</button>
@@ -89,30 +81,48 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+
+            <div class="col-md-3">
                 <div class="border rounded bg-light m-2 p-2">
-                    <h6>Search Radius (meters)</h6>
+                    <p class="h6 text-center">Search Radius (meters)</p>
                     <input type="number" id="search_radius" min="0" max="100000" class="form-control" aria-label="Text input with dropdown button">
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="border rounded bg-light m-2 p-2">
-                    <h6>Unit System</h6>
-                    <select class="form-select" id="units_selector">
-                        <option value="0">Standard</option>
-                        <option value="1">Metric</option>
-                        <option value="2">Imperial</option>
-                    </select>
-                </div>
-            </div>
+
         </div>
         
         <!-- body section -->
         <div class="row g-0">
             
-            
             <!-- selection data block -->
-            <div class="col-md-4"> 
+            <div class="col-md-3"> 
+
+                <!-- weather metric selection -->
+                <div class="border rounded bg-light m-2 p-2">
+                    <div>
+                        <p class="h6 text-center">Five Day Forecast</p>
+                        <select class="form-select" id="weather_metric_selector">
+                            <option value="0">Max Temperature</option>
+                            <option value="1">Min Temperature</option>
+                            <option value="2">'Feels Like' Temperature</option>
+                            <option value="3">Humidity</option>
+                            <option value="4">Cloudiness</option>
+                            <option value="5">Wind Speed</option>
+                        </select>
+                    </div>
+                    <hr>  
+                    <p class="h6 text-center">Measurement System</p>
+                    <select class="form-select" id="units_selector">
+                        <option value="0">Standard</option>
+                        <option value="1">Metric</option>
+                        <option value="2">Imperial</option>
+                    </select>
+
+                    <!-- weather metric selection -->
+                    
+                    <div id="forecast_plot"></div>
+                
+                </div>
 
                 <!-- metadata -->
                 <div class="border rounded bg-light m-2 p-2">
@@ -154,36 +164,17 @@
                                 <td id="selection_last_review"></td>
                             </tr>
                             <tr>
-                                <th scope="row">Number of Reviews</th>
+                                <th scope="row">Total Reviews</th>
                                 <td id="selection_number_of_reviews"></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- weather data -->
-                <div class="border rounded bg-light m-2 p-2">
-
-                    <!-- weather metric selection -->
-                    <div>
-                        <p class="h6 text-center">Five Day Forecast</p>
-                        <select class="form-select" id="weather_metric_selector">
-                            <option value="0">Max Temperature</option>
-                            <option value="1">Min Temperature</option>
-                            <option value="2">'Feels Like' Temperature</option>
-                            <option value="3">Humidity</option>
-                            <option value="4">Cloudiness</option>
-                            <option value="5">Wind Speed</option>
-                        </select>
-                    </div>
-
-                    <!-- weather forecast -->
-                    <div id="forecast_plot"></div>
-                </div>
             </div>
             
             <!-- map block -->
-            <div class="col-md-8"> 
+            <div class="col-md-9"> 
                 <div id="map_loc" class="border rounded bg-light m-2">
                 
                     <!-- leaflet map -->
@@ -191,15 +182,21 @@
 
                     <!-- paste fancy search dropdown inside this DIV -->
                     <div id="search_loc">
-                        <select class="js-example-basic-single" name="state">
+                        <div class="border rounded bg-light m-2 p-2">
+                            <div class="ui-widget">
+                                <label for="tags">Start typing a US city.</label>
+                                <input id="tags">
+                            </div>
+                        </div>
+                        <!-- <select class="js-example-basic-single" name="state">
                             <option value="AL">Alabama</option>
                             <option value="WY">Wyoming</option>
-                        </select>
+                        </select> -->
                     </div>
                 </div>
             </div>
-
         </div>
+
     </div>
 
     <!-- bootstrap js scripts -->
