@@ -28,7 +28,8 @@ base.prepare(engine, reflect=True)
 airbnb = base.classes.airbnbs
 hosts = base.classes.hosts
 rooms = base.classes.room_types
-#cities = base.classes.us_cities
+airports = base.classes.airports
+cities = base.classes.us_cities
 
 # Instantiate the Flask application.
 app = Flask(__name__)
@@ -69,40 +70,70 @@ def AirBnBRoute():
 #         dict["longitude"] = longitude
 #         airbnb_info.append(dict)
     
-#     return jsonify(airbnb_info)
+    # run the api request
+    try:
+        return { "status": "ok", "response": requests.get(places_url).json() }
+    except requests.exceptions.RequestException as e:
+        return { "status": "not_ok", "response": e.strerror }
+    
+# get list of dictionaries from airbnbs table
+@app.route("/airbnb")
+def AirBnBRoute():
+ 
+    session = Session(engine)
+    results = session.query(airbnb.airbnb_id, airbnb.airbnb_name, hosts.host_name, rooms.room_type, airbnb.latitude, airbnb.longitude, airbnb.city)\
+        .join(hosts,(hosts.host_id == airbnb.host_id) & (hosts.airbnb_id == airbnb.airbnb_id))\
+        .join(rooms, (rooms.room_id == airbnb.room_id))#.filter(airbnb.city == 'Asheville')
+ 
+    session.close()
+ 
+    airbnb_info = []
+    for airbnb_id, airbnb_name, host_name, room_type, latitude,  longitude, city in results:
+        dict = {}
+        dict["airbnb_id"] = airbnb_id
+        dict["airbnb_name"] = airbnb_name
+        dict["host_name"] = host_name
+        dict["room_type"] = room_type
+        dict["latitude"] = latitude
+        dict["longitude"] = longitude
+        dict["city"] = city
+        airbnb_info.append(dict)
+   
+    return jsonify(airbnb_info)
 
-# @app.route("/hosts")
-# def HostRoute():
+# get list of dictionaries from airports table
+@app.route("/airports")
+def AirportRoute():
+    session = Session(engine)
+    results = session.query(airports.iata, airports.airport_name, airports.latitude, airports.longitude).all()
+    session.close()
 
-#     session = Session(engine)
-#     results = session.query(hosts.host_id, hosts.host_name).all()
-#     session.close()
-
-#     host_info = []
-#     for host_id, host_name in results:
+#     airport_info = []
+#     for iata, airport_name, latitude, longitude in results:
 #         dict = {}
-#         dict["host_id"] = host_id
-#         dict["host_name"] = host_name
-#         host_info.append(dict)
-#         print(host_info)
-#     return jsonify(host_info)
+#         dict["iata"] = iata
+#         dict["airport_name"] = airport_name
+#         dict['latitude'] = latitude
+#         dict['longitude'] = longitude
+#         airport_info.append(dict)
+#     return jsonify(airport_info) 
 
-# @app.route("/cities")
-# def CityRoute():
+def CityRoute():
 
-#     session = Session(engine)
-#     results = session.query(cities.city_name, cities.latitude, cities.longitude).all()
-#     session.close()
+    session = Session(engine)
+    results = session.query(cities.city_name, cities.state, cities.latitude, cities.longitude).all()
+    session.close()
 
-#     city_info = []
-#     for city_name, latitude, longitude in results:
-#         dict = {}
-#         dict["city_name"] = city_name
-#         dict["latitude"] = latitude
-#         dict["longitude"] = longitude
-#         city_info.append(dict)
-#         print(city_info)
-#     return jsonify(city_info)
+    city_info = []
+    for city_name, state, latitude, longitude in results:
+        dict = {}
+        dict["city_name"] = city_name
+        dict["city"] = city_name
+        dict["latitude"] = latitude
+        dict["longitude"] = longitude
+        city_info.append(dict)
+        print(city_info)
+    return jsonify(city_info)
 
 # run the flask server
 if __name__ == "__main__":
