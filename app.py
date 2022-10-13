@@ -100,7 +100,7 @@ def AirBnBRoute():
 #         dict['latitude'] = latitude
 #         dict['longitude'] = longitude
 #         airport_info.append(dict)
-#     return jsonify(airport_info)
+#     return jsonify(airport_info) 
 
 # @app.route("/cities")
 # def CityRoute():
