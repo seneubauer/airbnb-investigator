@@ -74,14 +74,14 @@ CREATE TABLE "stg_airbnbs" (
 	"host_name" varchar(255) NULL,
 	"neighbourhood_group" varchar(255) NULL,
 	"neighbourhood" varchar(255) NULL,
-    "latitude" decimal   NULL,
-    "longitude" decimal   NULL,
+    "latitude" float   NULL,
+    "longitude" float   NULL,
     "room_type" varchar(50)   NULL,
-    "price" decimal   NULL,
+    "price" float   NULL,
     "minimum_nights" int   NULL,
     "number_of_reviews" int   NULL,
     "last_review" varchar(10)   NULL,
-    "reviews_per_month" decimal   NULL,
+    "reviews_per_month" float   NULL,
 	"calculated_host_listings_count" int null,
     "availability_365" integer  NULL,
     "city" varchar(255)   NULL
@@ -92,8 +92,8 @@ CREATE TABLE "stg_airports" (
     "airport" varchar(255)   NULL,
     "city" varchar(255)   NULL,
     "state" varchar(4)   NULL,
-    "latitude" decimal   NOT NULL,
-    "longitude" decimal   NOT NULL
+    "latitude" float   NOT NULL,
+    "longitude" float   NOT NULL
 
      );
 
@@ -102,8 +102,8 @@ DROP TABLE IF EXISTS stg_airports;
 CREATE TABLE "us_cities" (
     "city_id" serial   NOT NULL,
     "city" varchar(255)   NULL,
-    "latitude" decimal   NULL,
-    "longitude" decimal   NULL,
+    "latitude" float   NULL,
+    "longitude" float   NULL,
     CONSTRAINT "pk_us_cities" PRIMARY KEY (
         "city_id"
      )
