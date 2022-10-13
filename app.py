@@ -42,6 +42,11 @@ def IndexRoute():
     webpage = render_template("index.html")
     return webpage
 
+# Populate dropdown from SQL
+@app.route("/query_city_names/")
+def query_city_names():
+
+
 # weather api call
 @app.route("/weather_forecast/<lat_value>/<lon_value>/<unit_system>/")
 def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):

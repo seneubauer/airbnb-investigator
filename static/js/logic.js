@@ -31,6 +31,21 @@ console.log("logic.js is connected to index.html");
 console.log("please show up");
 
 // Populate autocomp function
+// function GetcityNames()
+// {
+//     d3.json("query_city_names/").then(function (data)
+//     {
+//         availableTags = data;
+//         $("#tags").autocomplete(
+//             {
+//                 source: availableTags
+//             }
+//         );
+
+//     });
+// }
+
+// Populate test autocomp function
 $(function() {
     var availableTags = [
         "ActionScript",
@@ -214,11 +229,12 @@ function init(initial_coordinates)
             title: {
                 text: `${axis_titles[forecast_metric]} ${unit_system.temp_units}`
             }},
+        height: 200,
         margin: {
             l: 50,
-            t: 50,
+            t: 20,
             r: 50,
-            b: 50},
+            b: 0},
         paper_bgcolor: "rgba(0, 0, 0, 0)",
         plot_bgcolor: "rgba(0, 0, 0, 0)"
     };
