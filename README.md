@@ -3,11 +3,15 @@ Project 3 repository for University of Minnesota's Data Visualization & Analytic
 
 ### Instructions:
 Create file `config.py` to pass your user name, password, and port number into variables
-This code will not run unless you first configure the following three variables:
-##### I think we should add this and update our jupyter files to include config.py imports
-* user = "postgres"
-* password = "< YOUR PostgreSQL Password HERE >"
-* port = "< YOUR PostgreSQL Port Number HERE >"
+This code will not run unless you first configure the following variables:
+
+* pg_username = "postgres"
+* pg_password = "bootcamp"
+* pg_dbname = "AirBnB"
+* pg_port = 5432 # or whatever else your postgresql port is
+* places_api_key = "api_key_here" # api key for Places API
+* owm_api_key = "api_key_here_for_openweather"
+
 "< more repo instructions HERE >"
 "< How to use repo etc. >"
 ---
@@ -68,9 +72,9 @@ An interactive map that provides custom data and visualizations from AirBnb data
 
 ### Observations:
 * < List Observations Here >
-* 
-* 
-* 
+* Special prioritization requirements for style.css are needed for elements that aren't working well togehter like !important
+* Cache can cause problems in some browsers when using API calls, and there are tools that can prevent this
+* Taking the time to design a thoughtful ERD can save tons of time later
 
 ---
 
