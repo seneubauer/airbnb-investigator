@@ -17,8 +17,8 @@ CREATE TABLE "airports" (
     "airport_name" varchar(255)   NULL,
     "city" varchar(255)   NULL,
     "state" varchar(4)   NULL,
-    "latitude" decimal   NOT NULL,
-    "longitude" decimal   NOT NULL,
+    "latitude" float   NOT NULL,
+    "longitude" float   NOT NULL,
     CONSTRAINT "pk_airports" PRIMARY KEY (
         "iata"
      )
