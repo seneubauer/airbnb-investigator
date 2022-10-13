@@ -17,8 +17,8 @@ CREATE TABLE "airports" (
     "airport_name" varchar(255)   NULL,
     "city" varchar(255)   NULL,
     "state" varchar(4)   NULL,
-    "latitude" decimal   NOT NULL,
-    "longitude" decimal   NOT NULL,
+    "latitude" float   NOT NULL,
+    "longitude" float   NOT NULL,
     CONSTRAINT "pk_airports" PRIMARY KEY (
         "iata"
      )
@@ -28,13 +28,13 @@ CREATE TABLE airbnbs (airbnb_pk serial not null,
 	airbnb_id int4 NOT NULL,
 	airbnb_name varchar(255) NULL,
 	host_id int4 NULL,
-	latitude numeric NULL,
-	longitude numeric NULL,
+	latitude float NULL,
+	longitude float NULL,
 	room_id int4 NULL,
-	price numeric NULL,
+	price float NULL,
 	minimum_nights int4 NULL,
 	number_of_reviews int4 NULL,
-	reviews_per_month numeric NULL,
+	reviews_per_month float NULL,
 	availability_365 int4 NULL,
 	city varchar(255) NULL,
 	CONSTRAINT pk_airbnbs PRIMARY KEY (airbnb_pk)
@@ -62,6 +62,7 @@ CREATE TABLE "room_types" (
 
 CREATE TABLE us_cities (
 city_name varchar(255) NOT NULL,
+state varchar(4) NOT NULL,
 latitude float NOT NULL,
 longitude float NOT NULL
 );

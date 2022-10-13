@@ -27,7 +27,8 @@ base.prepare(engine, reflect=True)
 
 #Choose the SQL tables we wish to use.
 airbnb = base.classes.airbnbs
-hosts = base.classes.hosts
+hosts = base.classes.room_types
+airports = base.classes.airports
 #cities = base.classes.us_cities
 
 
@@ -72,35 +73,34 @@ def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms)
 def AirBnBRoute():
 
     session = Session(engine)
-    results = session.query(airbnb.id, airbnb.airbnb_name, airbnb.latitude, airbnb.longitude).all()
+    results = session.query(airbnb.airbnb_id, airbnb.airbnb_name, airbnb.latitude, airbnb.longitude).all()
     session.close()
 
     airbnb_info = []
-    for id, airbnb_name, latitude, longitude in results:
+    for airbnb_id, airbnb_name, latitude, longitude in results:
         dict = {}
-        dict["id"] = id
+        dict["airbnb_id"] = airbnb_id
         dict["airbnb_name"] = airbnb_name
         dict["latitude"] = latitude
         dict["longitude"] = longitude
         airbnb_info.append(dict)
-    
     return jsonify(airbnb_info)
 
-@app.route("/hosts")
-def HostRoute():
+# @app.route("/airports")
+# def AirportRoute():
+#     session = Session(engine)
+#     results = session.query(airports.iata, airports.airport_name, airports.latitude, airports.longitude).all()
+#     session.close()
 
-    session = Session(engine)
-    results = session.query(hosts.host_id, hosts.host_name).all()
-    session.close()
-
-    host_info = []
-    for host_id, host_name in results:
-        dict = {}
-        dict["host_id"] = host_id
-        dict["host_name"] = host_name
-        host_info.append(dict)
-        print(host_info)
-    return jsonify(host_info)
+#     airport_info = []
+#     for iata, airport_name, latitude, longitude in results:
+#         dict = {}
+#         dict["iata"] = iata
+#         dict["airport_name"] = airport_name
+#         dict['latitude'] = latitude
+#         dict['longitude'] = longitude
+#         airport_info.append(dict)
+#     return jsonify(airport_info)
 
 # @app.route("/cities")
 # def CityRoute():
