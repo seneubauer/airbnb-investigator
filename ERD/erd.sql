@@ -2,15 +2,15 @@
 
 -- DROP DATABASE IF EXISTS "AirBnB";
 
-CREATE DATABASE "AirBnB"
-    WITH
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'C'
-    LC_CTYPE = 'C'
-    TABLESPACE = pg_default
-    CONNECTION LIMIT = -1
-    IS_TEMPLATE = False;
+-- CREATE DATABASE "AirBnB"
+--     WITH
+--     OWNER = postgres
+--     ENCODING = 'UTF8'
+--     LC_COLLATE = 'C'
+--     LC_CTYPE = 'C'
+--     TABLESPACE = pg_default
+--     CONNECTION LIMIT = -1
+--     IS_TEMPLATE = False;
 
 CREATE TABLE "airports" (
     "iata" varchar(4)   NOT NULL,
@@ -41,9 +41,6 @@ CREATE TABLE airbnbs (airbnb_pk serial not null,
 );
 -- airbnbs foreign key(s)
 
-ALTER TABLE airbnbs
-ADD CONSTRAINT fk_airbnbs_room_id FOREIGN KEY (room_id) REFERENCES room_types(room_id);
-
 CREATE TABLE "hosts" (
     "host_id" integer   not null,
     "airbnb_id" integer not null,
@@ -60,13 +57,16 @@ CREATE TABLE "room_types" (
      )
 );
 
+ALTER TABLE airbnbs
+ADD CONSTRAINT fk_airbnbs_room_id FOREIGN KEY (room_id) REFERENCES room_types(room_id);
+
 CREATE TABLE us_cities (
-city_pk serial NOT NULL,
-city_name varchar(255) NOT NULL,
-state varchar(4) NOT NULL,
-latitude float NOT NULL,
-longitude float NOT NULL
-CONSTRAINT "pk_us_cities" PRIMARY KEY ("city_pk")
+	city_pk serial NOT NULL,
+	city_name varchar(255) NOT NULL,
+	state varchar(4) NOT NULL,
+	latitude float NOT NULL,
+	longitude float NOT NULL,
+	CONSTRAINT "pk_us_cities" PRIMARY KEY ("city_pk")
 );
 
 CREATE TABLE "stg_airbnbs" (
@@ -87,7 +87,7 @@ CREATE TABLE "stg_airbnbs" (
 	"calculated_host_listings_count" int null,
     "availability_365" integer  NULL,
     "city" varchar(255)   NULL
-    );
+);
     
 CREATE TABLE "stg_airports" (
     "iata" varchar(4)   NOT NULL,
@@ -96,17 +96,4 @@ CREATE TABLE "stg_airports" (
     "state" varchar(4)   NULL,
     "latitude" float   NOT NULL,
     "longitude" float   NOT NULL
-
-     );
-
-DROP TABLE IF EXISTS stg_airports;
-
-CREATE TABLE "us_cities" (
-    "city_id" serial   NOT NULL,
-    "city" varchar(255)   NULL,
-    "latitude" float   NULL,
-    "longitude" float   NULL,
-    CONSTRAINT "pk_us_cities" PRIMARY KEY (
-        "city_id"
-     )
 );
