@@ -28,7 +28,6 @@ let airbnbs = [
 
 // confirm logic.js is connected to index.html
 console.log("logic.js is connected to index.html");
-console.log("please show up");
 
 // Populate autocomp function
 // function GetcityNames()
@@ -127,8 +126,8 @@ let metadata_last_review = d3.select("#selection_last_review");
 let metadata_number_of_reviews = d3.select("#selection_number_of_reviews");
 
 // define the layer groups globally
-let airbnb_markers_layer = L.layerGroup();
-let places_markers_layer = L.layerGroup();
+let airbnb_markers_layer = new L.layerGroup();
+let places_markers_layer = new L.layerGroup();
 
 // define HTML element events
 forecast_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]) });
@@ -247,15 +246,15 @@ function init(initial_coordinates)
     /* ----- populate the autocomplete dropdown ----- */
 
     // query the flask server
-    d3.json("query_city_names/").then(function (data)
-    {
-        availableTags = data;
-        $("#tags").autocomplete(
-            {
-                source: availableTags
-            }
-        );
-    });
+    // d3.json("query_city_names/").then(function (data)
+    // {
+    //     availableTags = data;
+    //     $("#tags").autocomplete(
+    //         {
+    //             source: availableTags
+    //         }
+    //     );
+    // });
 
 
 
@@ -334,17 +333,20 @@ function Places_Search()
     let search_terms = search_terms_input.property("value");
     let search_radius = search_radius_input.property("value");
     
+    if (search_terms == "") { search_terms = "None"; }
+
     // construct the api query
     let route = `nearby_search/${current_coordinates[0]}/${current_coordinates[1]}/${search_radius}/${search_terms}/`;
     
     // get the places api result
     d3.json(route).then(function (data)
     {
+        console.log(data);
         // check if the places call was successful
         if (data.status == "ok")
         {
             // retrieve the array of businesses
-            businesses = Object.values(data.results);
+            businesses = Object.values(data.response.results);
 
             // initialize the content arrays
             let places_markers = [];
@@ -361,7 +363,7 @@ function Places_Search()
             {
                 if ("name" in businesses[i]) { business_name = businesses[i].name; } else { business_name = "undefined"; }
                 if ("geometry" in businesses[i]) { lat = businesses[i].geometry.location.lat; } else { lat = usa_center[0]; }
-                if ("geometry" in businesses[i]) { lon = businesses[i].geometry.location.lon; } else { lon = usa_center[1]; }
+                if ("geometry" in businesses[i]) { lon = businesses[i].geometry.location.lng; } else { lon = usa_center[1]; }
                 if ("rating" in businesses[i]) { rating = businesses[i].rating; } else { rating = 0; }
                 if ("price_level" in businesses[i]) { price_level = businesses[i].price_level; } else { price_level = 0; }
                 if ("user_ratings_total" in businesses[i]) {total_ratings = businesses[i].user_ratings_total; } else { total_ratings = 0; }
@@ -395,10 +397,8 @@ function Places_Search()
                     </div>`));
             }
 
-
-
-
-
+            // populate the markers layer group
+            places_markers_layer = L.layerGroup(places_markers);
         }
         else if (data.status == "not_ok")
         {
@@ -411,5 +411,5 @@ function Places_Search()
 // perform the Google Places reset
 function Places_Reset()
 {
-    
+    places_markers_layer = L.layerGroup([]);
 }
