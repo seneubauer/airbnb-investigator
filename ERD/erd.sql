@@ -61,10 +61,12 @@ CREATE TABLE "room_types" (
 );
 
 CREATE TABLE us_cities (
+city_pk serial NOT NULL,
 city_name varchar(255) NOT NULL,
 state varchar(4) NOT NULL,
 latitude float NOT NULL,
 longitude float NOT NULL
+CONSTRAINT "pk_us_cities" PRIMARY KEY ("city_pk")
 );
 
 CREATE TABLE "stg_airbnbs" (
