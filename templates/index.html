@@ -104,10 +104,10 @@
         <div class="row g-0">
             
             <!-- selection data block -->
-            <div class="col-md-3"> 
-
-                <!-- weather metric selection -->
+            <div class="col-md-3">
                 <div class="border rounded bg-light m-2 p-2">
+
+                    <!-- weather metric selection -->
                     <div>
                         <p class="h6 text-center">Five Day Forecast</p>
                         <select class="form-select" id="weather_metric_selector">
@@ -127,10 +127,8 @@
                         <option value="2">Imperial</option>
                     </select>
 
-                    <!-- weather metric selection -->
-                    
+                    <!-- forecast plot -->
                     <div id="forecast_plot"></div>
-                
                 </div>
 
                 <!-- metadata -->
@@ -184,19 +182,7 @@
             <!-- map block -->
             <div class="col-md-9"> 
                 <div id="map_loc" class="border rounded bg-light m-2">
-                
-                    <!-- leaflet map -->
                     <div id="leaflet_map"></div>
-
-                    <!-- paste fancy search dropdown inside this DIV -->
-                    <!-- <div id="search_loc">
-                        <div class="border rounded bg-light m-2 p-2">
-                            <div class="ui-widget">
-                                <label for="tags">Start typing a US city.</label>
-                                <input id="tags">
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -209,7 +195,6 @@
             crossorigin="anonymous"></script>
     
     <!-- local js scripts -->
-    <script src="/static/js/config.js"></script>
     <script src="/static/js/logic.js"></script>
 </body>
 

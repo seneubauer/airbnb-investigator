@@ -11,10 +11,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
 # import confidential information
-from config import pg_username, pg_password, pg_port, pg_dbname, owm_api_key, places_api_key
+from config import username, password, port, dbase, owm_api_key, places_api_key
 
 # build the posgresql connection string
-connection_string = f"postgresql://{pg_username}:{pg_password}@localhost:{pg_port}/{pg_dbname}"
+connection_string = f"postgresql://{username}:{password}@localhost:{port}/{dbase}"
 
 # build the sqlalchemy engine
 engine = create_engine(connection_string, pool_pre_ping=True)
@@ -54,7 +54,7 @@ def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):
         return { "status": "ok", "response": requests.get(weather_url).json() }
     except requests.exceptions.RequestException as e:
         return { "status": "not_ok", "response": e.strerror }
-​
+
 # places api call
 @app.route("/nearby_search/<lat_value>/<lon_value>/<search_radius>/<search_terms>/")
 def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms):
@@ -71,9 +71,9 @@ def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms)
         return { "status": "ok", "response": requests.get(places_url).json() }
     except requests.exceptions.RequestException as e:
         return { "status": "not_ok", "response": e.strerror }
-    
+
 # get list of dictionaries from airbnbs table
-@app.route("/airbnb")
+@app.route("/airbnb/")
 def AirBnBRoute():
  
     session = Session(engine)
@@ -118,8 +118,10 @@ def AirportRoute():
         dict['latitude'] = latitude
         dict['longitude'] = longitude
         airport_info.append(dict)
-    return jsonify(airport_info) 
+    return jsonify(airport_info)
 
+# get list of dictionaries from the cities table
+@app.route("/get_cities/")
 def CityRoute():
 
     session = Session(engine)
@@ -134,7 +136,7 @@ def CityRoute():
         dict["latitude"] = latitude
         dict["longitude"] = longitude
         city_info.append(dict)
-        print(city_info)
+        
     return jsonify(city_info)
 
 # run the flask server
