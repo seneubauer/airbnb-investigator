@@ -29,52 +29,6 @@ let airbnbs = [
 // confirm logic.js is connected to index.html
 console.log("logic.js is connected to index.html");
 
-// Populate autocomp function
-// function GetcityNames()
-// {
-//     d3.json("query_city_names/").then(function (data)
-//     {
-//         availableTags = data;
-//         $("#tags").autocomplete(
-//             {
-//                 source: availableTags
-//             }
-//         );
-
-//     });
-// }
-
-// Populate test autocomp function
-$(function() {
-    var availableTags = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
-    ];
-    $("#tags").autocomplete({
-        source: availableTags
-    });
-});
-
 // define the geographic center of contiguous mainlan United States
 let usa_center = [39.833333, -98.583333];
 let current_coordinates = usa_center;
@@ -108,7 +62,11 @@ let axis_titles = [
     "Wind Speed"
 ];
 
+// define the city dictionary
+let cities = {};
+
 // identify HTML elements for later reference
+let city_selector = d3.select("#tags");
 let forecast_selector = d3.select("#weather_metric_selector");
 let unit_system_selector = d3.select("#units_selector");
 let search_command_button = d3.select("#search_command");
@@ -130,13 +88,74 @@ let airbnb_markers_layer = new L.layerGroup();
 let places_markers_layer = new L.layerGroup();
 
 // define HTML element events
-forecast_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]) });
-unit_system_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]) });
+$("#tags").on("autocompleteselect", AutoCompleteSelectHandler);
+forecast_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]); });
+unit_system_selector.on("change", function() { Forecast_Update(current_coordinates[0], current_coordinates[1]); });
 search_command_button.on("click", Places_Search);
 reset_command_button.on("click", Places_Reset);
 
 // run the initialization method
 init(usa_center);
+
+
+
+/* ----- leaflet map generation ----- */
+
+// assemble the airbnb markers
+let airbnb_markers = [];
+
+
+d3.json("airbnb/").then(function (data)
+{
+    console.log(data);
+});
+
+
+
+for (let i = 0; i < airbnbs.length; i++)
+{
+    airbnb_markers.push(L.marker(airbnbs[i].location)
+        .bindPopup(`<h6 id="test">${airbnbs[i].name}</h6>`)
+        .on("click", function() { Forecast_Update(airbnbs[i].location[0], airbnbs[i].location[1])}));
+}
+
+// construct the airbnb marker layer
+airbnb_markers_layer = L.layerGroup(airbnb_markers);
+
+// construct the street layer
+let street_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+// construct the topographic layer
+let topo_layer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+// specify the base layers
+let baseMaps = {
+    Street: street_layer,
+    Topography: topo_layer
+};
+
+// specify the overlays
+let overlayMaps = {
+    AirBnBs: airbnb_markers_layer,
+    Search: places_markers_layer
+};
+
+// initialize the leaflet map
+let myMap = L.map("leaflet_map", {
+    center: usa_center,
+    zoom: 5,
+    layers: [street_layer, airbnb_markers_layer, places_markers_layer]
+});
+
+// add the base and overlays
+let myControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(myMap);
+
+
+
 
 // initial configuration of the web page
 function init(initial_coordinates)
@@ -151,54 +170,6 @@ function init(initial_coordinates)
 
     // set the search radius to 5000 meters
     search_radius_input.property("value", "2500");
-
-
-
-    /* ----- leaflet map generation ----- */
-
-    // assemble the airbnb markers
-    let airbnb_markers = [];
-    for (let i = 0; i < airbnbs.length; i++)
-    {
-        airbnb_markers.push(L.marker(airbnbs[i].location)
-            .bindPopup(`<h6 id="test">${airbnbs[i].name}</h6>`)
-            .on("click", function() { Forecast_Update(airbnbs[i].location[0], airbnbs[i].location[1])}));
-    }
-
-    // construct the airbnb marker layer
-    airbnb_markers_layer = L.layerGroup(airbnb_markers);
-
-    // construct the street layer
-    let street_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-
-    // construct the topographic layer
-    let topo_layer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-    });
-
-    // specify the base layers
-    let baseMaps = {
-        Street: street_layer,
-        Topography: topo_layer
-    };
-
-    // specify the overlays
-    let overlayMaps = {
-        AirBnBs: airbnb_markers_layer,
-        Search: places_markers_layer
-    };
-    
-    // initialize the leaflet map
-    let myMap = L.map("leaflet_map", {
-        center: usa_center,
-        zoom: 5,
-        layers: [street_layer, airbnb_markers_layer, places_markers_layer]
-    });
-
-    // add the base and overlays
-    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(myMap);
 
 
 
@@ -245,23 +216,40 @@ function init(initial_coordinates)
 
     /* ----- populate the autocomplete dropdown ----- */
 
-    // query the flask server
-    // d3.json("query_city_names/").then(function (data)
-    // {
-    //     availableTags = data;
-    //     $("#tags").autocomplete(
-    //         {
-    //             source: availableTags
-    //         }
-    //     );
-    // });
+    // query the database for all cities
+    d3.json("get_cities/").then(function (data)
+    {
+        // construct a string array from the query result
+        var availableTags = [];
+        for (let i = 0; i < data.length; i++)
+        {
+            availableTags.push(`${data[i].city}, ${data[i].state}`);
+            cities[availableTags[i]] = { lat: data[i].latitude, lon: data[i].longitude };
+        }
+        
+        // populate the dropdown with availableTags
+        $("#tags").autocomplete({
+                    source: availableTags
+        });
+    });
 
 
-
+    
     /* ----- update the plot with real data ----- */
 
     // run the Forecast_Update method
     Forecast_Update(initial_coordinates[0], initial_coordinates[1]);
+}
+
+// handle the city clicked event
+function AutoCompleteSelectHandler(event, ui)
+{               
+    var selectedObj = ui.item;
+    console.log(cities[selectedObj.value]);
+
+    let coords = L.latLng(cities[selectedObj.value].lat, cities[selectedObj.value].lon);
+
+    myMap.flyTo(coords);
 }
 
 // update the forecast plot
