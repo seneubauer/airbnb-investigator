@@ -7,6 +7,12 @@
     position: relative;
 }
 
+#button_loc {
+    position: relative;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
 #search_loc {
     position: absolute !important;
     top: 5% !important;
