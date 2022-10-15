@@ -249,7 +249,7 @@ function AutoCompleteSelectHandler(event, ui)
 
     let coords = L.latLng(cities[selectedObj.value].lat, cities[selectedObj.value].lon);
 
-    myMap.flyTo(coords);
+    myMap.flyTo(coords, 10);
 }
 
 // update the forecast plot

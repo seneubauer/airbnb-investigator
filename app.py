@@ -42,6 +42,12 @@ def IndexRoute():
     webpage = render_template("index.html")
     return webpage
 
+# about page
+# @app.route("/about")
+# def IndexRoute():
+#     aboutpage = render_template("about.html")
+#     return aboutpage
+
 # weather api call
 @app.route("/weather_forecast/<lat_value>/<lon_value>/<unit_system>/")
 def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):

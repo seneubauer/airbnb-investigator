@@ -2,18 +2,59 @@
 Project 3 repository for University of Minnesota's Data Visualization & Analytics Coding Bootcamp
 
 ### Instructions:
-Create file `config.py` to pass your user name, password, and port number into variables
-This code will not run unless you first configure the following variables:
 
-* pg_username = "postgres"
-* pg_password = "bootcamp"
-* pg_dbname = "AirBnB"
-* pg_port = 5432 # or whatever else your postgresql port is
-* places_api_key = "api_key_here" # api key for Places API
-* owm_api_key = "api_key_here_for_openweather"
+#### Task 1. Clone the Repo
+   1. From github, clone this `airbnb-investigator` as a local repo
 
-"< more repo instructions HERE >"
-"< How to use repo etc. >"
+#### Task 2. Open PostgreSQL software
+   1. Open `PGAdmin` program, *while it loads move on to Task 3*
+
+#### Task 3. Open a navigation terminal
+   1. Open a `terminal` from the local repo if you are on a mac
+    - *--OR--*
+   1. Open a `gitbash` from the local repo if you are on a PC
+
+#### Task 4. Activate a python environment
+   1. Activate PythonData38 environment in your `terminal` *or* `gitbash`
+ 
+#### Task 5. Open a web based interactive computing platform
+   1. From `terminal` *or* `gitbash`, open a jupyter notebook
+   2. Create a file named `config.py`
+   3. Insert the following code and ***REPLACE your unique parameters*** where instructed:
+    >username = "postgres"
+    >password = "<-REPLACE WITH Your PGAdmin Password->"
+    >dbase = "AirBnB"
+    >port = "<- REPLACE WITH Your PGAdmin Port Number->"
+    >owm_api_key = "<- REPLACE WITH Your Open Weather Map API Key->"
+    >places_api_key = "<-REPLACE WITH Your Google Places API Key"
+    4. Save your changes
+    5. Leave jupyter notebook running in the background
+
+#### Task 6. Create an empty database
+   1. Using your unique password, log into `PGAdmin`
+   2. Create a new database named `AirBnB`
+
+#### Task 7. Open a query and run our schema code
+   1. Open the Query Tool
+   2. Navigate to and open the `erd.sql` file and run it in its entirety
+   
+   3. Close the Query tool
+   
+#### Task 8. Populate the schema with data
+   1. In the jupyter notebook open `etl_workflow.ipynb` and run each cell in order
+   2. Close
+   
+
+#### Task 9. Fire up the flask server
+   1. In your `terminal` *or* `gitbash` get a new command prompt line
+   2. run "python app.py"
+   
+#### Task 10. Open the application
+   1. In a `chrome` browser go to address "http://127.0.0.1:5000"
+    
+#### Task 11. Explore
+
+   *************WORKING HERE****************
 ---
 
 ### Overview:
@@ -51,23 +92,23 @@ An interactive map that provides custom data and visualizations from AirBnb data
 
 * In folder, `ERD`:
     1. `erd.png` is < describe contents >
-    2. `erd.sql` is < describe contents >
+    2. `erd.sql` is the postgreSQL file that creates the database schema
 
 * In folder, `Resources`:
     1. `plain.jpg` is < describe contents >
     2. `selected.jpg` is < describe contents >
 
 * In folder, `templates`/`static`/`css`:
-    1. `reset.css` is < describe contents >
-    2. `style.css` is < describe contents >
+    1. `reset.css` is style code file for resetting any changed style to a common start point
+    2. `style.css` is style code file for changing the style for customized elements
     
 * In folder, `templates`/`static`/`js`:
-    1. `logic.js` is < describe contents >
+    1. `logic.js` is a Javascript that defines functions we call with our flask server
     2. 
     
 * In folder, `templates`:
     1. `index.html` is the html code for the AirBnB landing page
-    2.
+    2. `about.html` is the html code for AirBnB's about page
 ---
 
 ### Observations:
