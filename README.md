@@ -21,14 +21,14 @@ Project 3 repository for University of Minnesota's Data Visualization & Analytic
    1. From `terminal` *or* `gitbash`, open a jupyter notebook
    2. Create a file named `config.py`
    3. Insert the following code and ***REPLACE your unique parameters*** where instructed:
-    >username = "postgres"
-    >password = "<-REPLACE WITH Your PGAdmin Password->"
-    >dbase = "AirBnB"
-    >port = "<- REPLACE WITH Your PGAdmin Port Number->"
-    >owm_api_key = "<- REPLACE WITH Your Open Weather Map API Key->"
-    >places_api_key = "<-REPLACE WITH Your Google Places API Key"
-    4. Save your changes
-    5. Leave jupyter notebook running in the background
+>username = "postgres"\
+password = "<-REPLACE WITH Your PGAdmin Password->"\
+dbase = "AirBnB"\
+port = "<- REPLACE WITH Your PGAdmin Port Number->"\
+owm_api_key = "<- REPLACE WITH Your Open Weather Map API Key->"\
+places_api_key = "<-REPLACE WITH Your Google Places API Key->"
+   4. Save your changes
+   5. Leave jupyter notebook running in the background
 
 #### Task 6. Create an empty database
    1. Using your unique password, log into `PGAdmin`
@@ -54,7 +54,6 @@ Project 3 repository for University of Minnesota's Data Visualization & Analytic
     
 #### Task 11. Explore
 
-   *************WORKING HERE****************
 ---
 
 ### Overview:
