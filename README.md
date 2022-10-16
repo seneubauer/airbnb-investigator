@@ -10,9 +10,7 @@ Project 3 repository for University of Minnesota's Data Visualization & Analytic
    1. Open `PGAdmin` program, *while it loads move on to Task 3*
 
 #### Task 3. Open a navigation terminal
-   1. Open a `terminal` from the local repo if you are on a mac
-    - *--OR--*
-   1. Open a `gitbash` from the local repo if you are on a PC
+   1. From the local repo, open a `terminal` if on mac ***OR*** open a `gitbash` if PC
 
 #### Task 4. Activate a python environment
    1. Activate PythonData38 environment in your `terminal` *or* `gitbash`
