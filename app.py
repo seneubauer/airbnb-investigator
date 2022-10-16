@@ -1,8 +1,7 @@
 # import dependencies for flask
-from cmath import log
-from flask import Flask
-from flask import render_template
-from flask import jsonify
+from flask import Flask, render_template, jsonify
+
+# import dependencies for api calls
 import requests
 
 # import dependencies for sqlalchemy
@@ -42,6 +41,16 @@ def IndexRoute():
     webpage = render_template("index.html")
     return webpage
 
+@app.route("/about")
+def AboutRoute():
+    aboutpage = render_template("about.html")
+    return aboutpage
+
+@app.route("/home")
+def HomeRoute():
+    backHome = render_template("index.html")
+    return backHome
+
 # weather api call
 @app.route("/weather_forecast/<lat_value>/<lon_value>/<unit_system>/")
 def Weather_Forecast_API_Request(lat_value, lon_value, unit_system):
@@ -73,71 +82,118 @@ def Nearby_Places_API_Request(lat_value, lon_value, search_radius, search_terms)
         return { "status": "not_ok", "response": e.strerror }
 
 # get list of dictionaries from airbnbs table
-@app.route("/airbnb/")
+@app.route("/get_all_airbnbs/")
 def AirBnBRoute():
  
     session = Session(engine)
-    results = session.query(airbnb.airbnb_id, airbnb.airbnb_name, hosts.host_name, rooms.room_type, airbnb.latitude, airbnb.longitude, airbnb.city, airbnb.price, \
-        airbnb.minimum_nights, airbnb.number_of_reviews, airbnb.reviews_per_month, airbnb.availability_365)\
-        .join(hosts,(hosts.host_id == airbnb.host_id) & (hosts.airbnb_id == airbnb.airbnb_id))\
-        .join(rooms, (rooms.room_id == airbnb.room_id))#.filter(airbnb.city == 'Asheville')
- 
+    results = session.query(airbnb.airbnb_name, hosts.host_name, rooms.room_type, airbnb.latitude, airbnb.longitude, airbnb.city, airbnb.price, airbnb.minimum_nights, airbnb.number_of_reviews, airbnb.reviews_per_month, airbnb.availability_365)\
+                            .join(hosts,(hosts.host_id == airbnb.host_id) & (hosts.airbnb_id == airbnb.airbnb_id))\
+                            .join(rooms, (rooms.room_id == airbnb.room_id)).all()
+    # End session
     session.close()
  
-    airbnb_info = []
-    for airbnb_id, airbnb_name, host_name, room_type, latitude,  longitude, city, price, minimum_nights, number_of_reviews, reviews_per_month, availability_365 in results:
-        dict = {}
-        dict["airbnb_id"] = airbnb_id
-        dict["airbnb_name"] = airbnb_name
-        dict["host_name"] = host_name
-        dict["room_type"] = room_type
-        dict["latitude"] = latitude
-        dict["longitude"] = longitude
-        dict["city"] = city
-        dict["price"] = price
-        dict["minimum_nights"] = minimum_nights
-        dict["number_of_reviews"] = number_of_reviews
-        dict["reviews_per_month"] = reviews_per_month
-        dict["availability_365"] = availability_365
-        airbnb_info.append(dict)
-   
-    return jsonify(airbnb_info)
+    # return the results
+    if results is None:
+        return { "status": "not_ok" }
+    else:
+        airbnb_info = []
+        for airbnb_name, host_name, room_type, latitude,  longitude, city, price, minimum_nights, number_of_reviews, reviews_per_month, availability_365 in results:
+            airbnb_info.append({ "airbnb_name": airbnb_name,
+                                 "host_name": host_name,
+                                 "room_type": room_type,
+                                 "latitude": latitude,
+                                 "longitude": longitude,
+                                 "city": city,
+                                 "price": price,
+                                 "minimum_nights": minimum_nights,
+                                 "number_of_reviews": number_of_reviews,
+                                 "reviews_per_month": reviews_per_month,
+                                 "availability_365": availability_365 })
+        
+        return jsonify(airbnb_info)
 
 # get list of dictionaries from airports table
-@app.route("/airports")
-def AirportRoute():
+@app.route("/get_all_airports/")
+def All_Airport_Data_Route():
+    
+    # start the session
     session = Session(engine)
-    results = session.query(airports.iata, airports.airport_name, airports.latitude, airports.longitude)
+    
+    # query the database
+    results = session.query(airports.iata, airports.airport_name, airports.latitude, airports.longitude).all()
+    
+    # end the session
     session.close()
 
-    airport_info = []
-    for iata, airport_name, latitude, longitude in results:
-        dict = {}
-        dict["iata"] = iata
-        dict["airport_name"] = airport_name
-        dict['latitude'] = latitude
-        dict['longitude'] = longitude
-        airport_info.append(dict)
-    return jsonify(airport_info)
-
-# get list of dictionaries from the cities table
-@app.route("/get_cities/")
-def CityRoute():
-
-    session = Session(engine)
-    results = session.query(cities.city_name, cities.state, cities.latitude, cities.longitude)
-    session.close()
-
-    city_info = []
-    for city_name, state, latitude, longitude in results:
-        dict = {}
-        dict["city"] = city_name
-        dict["state"] = state
-        dict["latitude"] = latitude
-        dict["longitude"] = longitude
-        city_info.append(dict)
+    # return the results
+    if results is None:
+        return { "status": "not_ok" }
+    else:
+        airport_info = []
+        for iata, airport_name, latitude, longitude in results:
+            airport_info.append({ "iata": iata,
+                                  "airport_name": airport_name,
+                                  "latitude": latitude,
+                                  "longitude": longitude })
         
-    return jsonify(city_info)
+        return jsonify(airport_info)
+
+# get list of dictionaries of all city data
+@app.route("/get_all_city_data/")
+def All_City_Data_Route():
+
+    # start database session
+    session = Session(engine)
+    
+    # query the database
+    results = session.query(cities.city_name, cities.state, cities.latitude, cities.longitude).all()
+    
+    # end database session
+    session.close()
+    
+    # return the results
+    if results is None:
+        return { "status": "not_ok" }
+    else:
+        city_info = []
+        for city_name, state, latitude, longitude in results:
+            city_info.append({ "city": city_name,
+                               "state": state,
+                               "lat": latitude,
+                               "lon": longitude })
+            
+        return jsonify(city_info)
+
+# get a dictionary of airbnb details by coordinates
+@app.route("/get_airbnb_details/<lat_value>/<lon_value>/")
+def Get_AirBnB_Details(lat_value, lon_value):
+    
+    # start database session
+    session = Session(engine)
+    
+    # query the database
+    result = session.query(airbnb.airbnb_name, hosts.host_name, airbnb.price, rooms.room_type, airbnb.city, airbnb.availability_365, airbnb.minimum_nights, airbnb.reviews_per_month, airbnb.number_of_reviews)\
+                            .join(hosts,(hosts.host_id == airbnb.host_id) & (hosts.airbnb_id == airbnb.airbnb_id))\
+                            .join(rooms, (rooms.room_id == airbnb.room_id))\
+                            .filter(airbnb.latitude == lat_value)\
+                            .filter(airbnb.longitude == lon_value).first()
+    
+    # end database session
+    session.close()
+    
+    # return the result
+    if result is None:
+        return { "status": "not_ok", "response": "Error within Flask server or database query." }
+    else:
+        return { "status": "ok", "response": { "airbnb_name": result[0],
+                                               "host_name": result[1],
+                                               "price": result[2],
+                                               "room_type": result[3],
+                                               "city": result[4],
+                                               "availability_365": result[5],
+                                               "minimum_nights": result[6],
+                                               "reviews_per_month": result[7],
+                                               "number_of_reviews": result[8] }}
 
 # run the flask server
 if __name__ == "__main__":
