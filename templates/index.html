@@ -41,7 +41,14 @@
             integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
             crossorigin=""></script>
 
-    <!-- import the js scripts -->
+     <!-- Marker cluster JavaScript code -->
+     <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
+
+     <!-- Marker cluster CSS -->
+     <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css">
+     <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
+ 
+            <!-- import the js scripts -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -168,8 +175,8 @@
                                 <td id="selection_minimum_nights"></td>
                             </tr>
                             <tr>
-                                <th scope="row">Last Review</th>
-                                <td id="selection_last_review"></td>
+                                <th scope="row">Reviews Per Month</th>
+                                <td id="selection_reviews_per_month"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Total Reviews</th>
