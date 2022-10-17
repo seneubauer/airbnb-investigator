@@ -68,7 +68,15 @@ An interactive map that provides interactive metadata and visualizations from Ai
 * Airports database
 * US Cities database
 
-* Python, Pandas, PostgreSQL, SQLAlchemy, html, javascript, leaflet, plotly, more??  < edit or append here as needed>
+* Python 
+* Pandas
+* PostgreSQL
+* SQLAlchemy
+* HTML
+* Flask
+* JavaScript
+* Leaflet
+* Plotly
 ---
 
 ##### Repo Contents:
@@ -106,8 +114,8 @@ An interactive map that provides interactive metadata and visualizations from Ai
 ---
 
 ### Observations:
-* < List Observations Here >
-* Special prioritization requirements for style.css are needed for elements that aren't working well togehter like !important
+* There is no such thing as "clean data"
+* Special prioritization requirements for style.css are needed for elements that aren't working well togehter like "!important" in our css.style sheet
 * Cache can cause problems in some browsers when using API calls, and there are tools that can prevent this
 * Taking the time to design a thoughtful ERD can save tons of time later
 
